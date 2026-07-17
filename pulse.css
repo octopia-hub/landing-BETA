@@ -1,0 +1,394 @@
+/* =============================================================
+   GREAT BOOST PULSE — pulse.css
+   Esfera de acompañamiento + diagnóstico de madurez en IA.
+   Autocontenido: no depende de GSAP, solo transform/opacity para
+   animación continua; los cambios de posición (docking, apertura
+   de modal) usan la técnica FLIP desde pulse.js, así que aquí solo
+   se definen los dos estados finales — la interpolación la hace JS
+   con transform puro.
+   ============================================================= */
+
+:root {
+  --pulse-size: 56px;
+  --pulse-z-trigger: 60;
+  --pulse-z-overlay: 200;
+  --pulse-z-modal: 210;
+  --pulse-level-1: var(--text-mute);
+}
+
+.pulse { position: relative; z-index: var(--pulse-z-trigger); }
+
+/* ---------------------------------------------------------------
+   Trigger — la esfera
+   --------------------------------------------------------------- */
+.pulse-trigger {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: var(--pulse-z-trigger);
+  display: inline-flex;
+  align-items: center;
+  height: var(--pulse-size);
+  padding: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 10px 34px -12px rgba(10, 8, 30, 0.55);
+  opacity: 0;
+  transform: scale(0.55);
+  transition: opacity .7s var(--ease-out), transform .7s var(--ease-bounce), right .5s var(--ease-soft), bottom .5s var(--ease-soft);
+  will-change: transform;
+}
+
+/* Despertar — visible tras el retraso que aplica pulse.js */
+.pulse[data-pulse-state="hero"] .pulse-trigger,
+.pulse[data-pulse-state="docked"] .pulse-trigger { opacity: 1; transform: scale(1); }
+
+/* Estado Hero — discreto, centrado, no distrae del contenido */
+.pulse[data-pulse-state="hero"] .pulse-trigger {
+  left: 50%;
+  right: auto;
+  bottom: 6vh;
+  transform: translate3d(-50%, 0, 0) scale(1);
+  opacity: .62;
+}
+.pulse[data-pulse-state="hero"] .pulse-trigger:hover,
+.pulse[data-pulse-state="hero"] .pulse-trigger:focus-within { opacity: .95; }
+
+/* Estado reposo — esquina inferior derecha */
+.pulse[data-pulse-state="docked"] .pulse-trigger { left: auto; right: 24px; bottom: 24px; }
+
+.pulse-orb {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--pulse-size);
+  height: var(--pulse-size);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pulse-orb::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: var(--gradient-brand-soft);
+  filter: blur(6px);
+  opacity: .8;
+}
+.pulse-orb-core {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  box-shadow: 0 0 18px 2px rgba(134, 35, 221, .55);
+}
+
+/* Pulso de luz periódico — solo en reposo, un breve pico por ciclo,
+   no una respiración continua. Únicamente opacity/transform. */
+.pulse[data-pulse-state="docked"] .pulse-orb-core { animation: pulseBeacon 13s ease-in-out infinite; }
+
+@keyframes pulseBeacon {
+  0%, 88%, 100% { transform: scale(1); box-shadow: 0 0 18px 2px rgba(134, 35, 221, .55); }
+  92% { transform: scale(1.22); box-shadow: 0 0 26px 6px rgba(193, 0, 209, .75); }
+  96% { transform: scale(1); box-shadow: 0 0 18px 2px rgba(134, 35, 221, .55); }
+}
+
+/* ---------------------------------------------------------------
+   Pill — se revela en hover/focus, mismo idioma de expansión que
+   .service-panel / .faq-answer (grid-template-columns 0fr → 1fr)
+   --------------------------------------------------------------- */
+.pulse-pill {
+  display: grid;
+  grid-template-columns: 0fr;
+  transition: grid-template-columns .45s var(--ease-bounce);
+}
+.pulse-trigger:hover .pulse-pill,
+.pulse-trigger:focus-visible .pulse-pill,
+.pulse-trigger:focus-within .pulse-pill { grid-template-columns: 1fr; }
+.pulse-pill-inner {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  white-space: nowrap;
+}
+.pulse-pill-text {
+  padding-left: .9rem;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.pulse-pill-time {
+  font-size: .76rem;
+  color: var(--text-mute);
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: rgba(242, 241, 250, 0.06);
+  border: 1px solid var(--surface-border);
+}
+.pulse-pill-arrow {
+  padding-right: 1.2rem;
+  color: var(--brand-purple);
+  font-weight: 700;
+  transition: transform .3s var(--ease-out);
+}
+.pulse-trigger:hover .pulse-pill-arrow { transform: translateX(3px); }
+
+/* ---------------------------------------------------------------
+   Overlay + Modal
+   --------------------------------------------------------------- */
+.pulse-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--pulse-z-overlay);
+  background: rgba(6, 5, 18, 0.72);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  opacity: 0;
+  transition: opacity .4s var(--ease-out);
+}
+.pulse-modal.is-open .pulse-overlay,
+.pulse-overlay.is-visible { opacity: 1; }
+.pulse-overlay[hidden] { display: none; }
+
+.pulse-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--pulse-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+}
+.pulse-modal[hidden] { display: none; }
+
+.pulse-modal-panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(720px, 88vh);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 80px -20px rgba(6, 5, 18, 0.65);
+  padding: clamp(1.8rem, 4vw, 2.6rem);
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity .35s var(--ease-out);
+}
+.pulse-modal.is-open .pulse-modal-panel { opacity: 1; }
+
+.pulse-modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-mute);
+  border: 1px solid var(--surface-border);
+  transition: color .25s var(--ease-out), border-color .25s var(--ease-out), background .25s var(--ease-out);
+}
+.pulse-modal-close:hover { color: var(--text); background: rgba(242, 241, 250, 0.06); border-color: rgba(134, 35, 221, .4); }
+.pulse-modal-close svg { width: 16px; height: 16px; }
+
+.pulse-modal-eyebrow {
+  font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--brand-purple);
+  margin-bottom: .7rem;
+}
+.pulse-modal-title { font-size: clamp(1.25rem, 2.6vw, 1.6rem); margin-bottom: .7rem; max-width: 34ch; }
+.pulse-modal-sub { color: var(--text-soft); font-size: .95rem; max-width: 48ch; margin-bottom: 1.2rem; }
+
+.pulse-modal-meta { display: flex; gap: .6rem; margin-bottom: 1.3rem; }
+.pulse-meta-chip {
+  font-size: .78rem; color: var(--text-soft);
+  padding: .4rem .8rem;
+  border-radius: 999px;
+  background: rgba(242, 241, 250, 0.05);
+  border: 1px solid var(--surface-border);
+}
+
+.pulse-progress { display: flex; align-items: center; gap: .9rem; margin-bottom: 1.8rem; }
+.pulse-progress-track {
+  flex: 1;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(242, 241, 250, 0.08);
+  overflow: hidden;
+}
+.pulse-progress-fill {
+  height: 100%;
+  background: var(--gradient-brand);
+  border-radius: inherit;
+  transition: width .5s var(--ease-out);
+}
+.pulse-progress-label { font-size: .8rem; color: var(--text-mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------
+   Fases — un único atributo en el panel controla qué se ve.
+   Sin innerHTML: todo el contenido ya existe en el HTML, solo se
+   alterna display.
+   --------------------------------------------------------------- */
+.pulse-quiz-head { display: none; }
+.pulse-modal-panel[data-pulse-phase="quiz"] .pulse-quiz-head { display: block; }
+
+.pulse-question, .pulse-result, .pulse-lead, .pulse-thanks { display: none; }
+.pulse-modal-panel[data-pulse-phase="quiz"] .pulse-question.is-active { display: flex; flex-direction: column; }
+.pulse-modal-panel[data-pulse-phase="result"] .pulse-result { display: block; }
+.pulse-modal-panel[data-pulse-phase="lead"] .pulse-lead { display: block; }
+.pulse-modal-panel[data-pulse-phase="thanks"] .pulse-thanks { display: block; }
+
+/* ---------------------------------------------------------------
+   Preguntas y tarjetas de opción
+   --------------------------------------------------------------- */
+.pulse-back {
+  align-self: flex-start;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-mute);
+  margin-bottom: 1rem;
+  transition: color .25s var(--ease-out);
+}
+.pulse-back:hover { color: var(--text); }
+.pulse-question[data-step="1"] .pulse-back { visibility: hidden; }
+
+.pulse-question-text {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 2.4vw, 1.3rem);
+  margin-bottom: 1.4rem;
+  max-width: 40ch;
+}
+
+.pulse-options { display: flex; flex-direction: column; gap: .7rem; }
+.pulse-option-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .95rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(242, 241, 250, 0.03);
+  border: 1px solid var(--surface-border);
+  cursor: pointer;
+  transition: border-color .25s var(--ease-out), background .25s var(--ease-out), transform .25s var(--ease-out);
+}
+.pulse-option-card:hover { border-color: rgba(134, 35, 221, .4); background: rgba(242, 241, 250, 0.05); transform: translateX(2px); }
+.pulse-option-card:has(input:focus-visible) { outline: 2px solid var(--brand-purple); outline-offset: 2px; }
+.pulse-option-mark {
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--surface-border);
+  transition: border-color .25s var(--ease-out), background .25s var(--ease-out);
+}
+.pulse-option-mark::after {
+  content: "";
+  display: block;
+  width: 8px; height: 8px;
+  margin: 4px;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  transform: scale(0);
+  transition: transform .25s var(--ease-bounce);
+}
+.pulse-option-card:has(input:checked) { border-color: var(--brand-purple); background: rgba(134, 35, 221, 0.08); }
+.pulse-option-card:has(input:checked) .pulse-option-mark { border-color: var(--brand-purple); }
+.pulse-option-card:has(input:checked) .pulse-option-mark::after { transform: scale(1); }
+.pulse-option-text { font-size: .92rem; color: var(--text-soft); }
+.pulse-option-card:has(input:checked) .pulse-option-text { color: var(--text); }
+
+/* ---------------------------------------------------------------
+   Resultado — ruta de niveles
+   --------------------------------------------------------------- */
+.pulse-level-path { display: flex; flex-direction: column; margin-bottom: 1.6rem; }
+.pulse-level-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-block: .6rem;
+  position: relative;
+  opacity: .4;
+  transition: opacity .3s var(--ease-out);
+}
+.pulse-level-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 21px;
+  top: calc(100% - .2rem);
+  width: 1.5px;
+  height: 1rem;
+  background: var(--surface-border);
+}
+.pulse-level-badge { flex-shrink: 0; width: 44px; height: 44px; color: var(--pulse-level-1); }
+.pulse-level-item[data-level="2"] .pulse-level-badge { color: var(--brand-deep); }
+.pulse-level-item[data-level="3"] .pulse-level-badge { color: var(--brand-purple); }
+.pulse-level-info { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+.pulse-level-name { font-weight: 700; font-size: .96rem; color: var(--text-soft); }
+.pulse-level-marker { font-size: .78rem; color: var(--text-mute); }
+
+.pulse-level-item.is-done { opacity: .8; }
+.pulse-level-item.is-done .pulse-level-marker::before { content: "✓ completado"; }
+.pulse-level-item.is-current {
+  opacity: 1;
+}
+.pulse-level-item.is-current .pulse-level-name { color: var(--text); }
+.pulse-level-item.is-current .pulse-level-marker::before { content: "● usted está aquí"; color: var(--brand-magenta); font-weight: 600; }
+.pulse-level-item.is-current .pulse-level-badge { filter: drop-shadow(0 0 10px rgba(193, 0, 209, .45)); }
+
+.pulse-level-detail { display: none; padding: 1.4rem; border-radius: var(--radius-sm); background: rgba(242, 241, 250, 0.03); border: 1px solid var(--surface-border); margin-bottom: 1.6rem; }
+.pulse-modal-panel[data-pulse-level="1"] .pulse-level-detail[data-level="1"],
+.pulse-modal-panel[data-pulse-level="2"] .pulse-level-detail[data-level="2"],
+.pulse-modal-panel[data-pulse-level="3"] .pulse-level-detail[data-level="3"],
+.pulse-modal-panel[data-pulse-level="4"] .pulse-level-detail[data-level="4"],
+.pulse-modal-panel[data-pulse-level="5"] .pulse-level-detail[data-level="5"] { display: block; }
+.pulse-level-detail p { font-size: .88rem; color: var(--text-mute); margin-bottom: .7rem; }
+.pulse-level-detail p:last-child { margin-bottom: 0; }
+.pulse-level-detail strong { color: var(--text-soft); font-weight: 600; }
+.pulse-level-meaning { color: var(--text-soft) !important; }
+
+.pulse-continue { width: 100%; }
+
+/* ---------------------------------------------------------------
+   Lead form / Thanks — reutiliza .form-row, input, .btn de styles.css
+   --------------------------------------------------------------- */
+.pulse-lead-form .form-row:last-of-type { margin-bottom: 1.2rem; }
+.pulse-thanks { text-align: center; padding-block: 1rem; }
+.pulse-thanks .btn { margin-top: .6rem; }
+
+/* ---------------------------------------------------------------
+   Trigger en modo "link" (páginas secundarias sin cuestionario)
+   --------------------------------------------------------------- */
+.pulse[data-pulse-mode="link"] .pulse-modal,
+.pulse[data-pulse-mode="link"] .pulse-overlay { display: none; }
+
+/* ---------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .pulse-modal { padding: 0; align-items: flex-end; }
+  .pulse-modal-panel {
+    width: 100%;
+    max-height: 92svh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  .pulse[data-pulse-state="hero"] .pulse-trigger { bottom: 5vh; }
+  .pulse-pill-text { font-size: .82rem; }
+}
+
+/* =============================================================
+   Reduced motion — solo apaga lo verdaderamente superfluo, igual
+   que hace styles.css con el Hero.
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-trigger { transition: opacity .2s linear; }
+  .pulse-orb-core { animation: none; }
+  .pulse-modal-panel, .pulse-overlay { transition: opacity .2s linear; }
+}
