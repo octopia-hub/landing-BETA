@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Espacio reservado para logo de certificación">
+  <defs>
+    <linearGradient id="g-cert" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2A1CBD"/>
+      <stop offset="100%" stop-color="#C100D1"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#g-cert)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="100" cy="82" r="46"/>
+    <path d="M74 120 62 168 100 148 138 168 126 120"/>
+  </g>
+</svg>

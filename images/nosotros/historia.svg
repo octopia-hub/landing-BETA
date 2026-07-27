@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 640" role="img" aria-label="Imagen pendiente: evolución de Great Boost Inc.">
+  <defs>
+    <linearGradient id="g-hist" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#223989"/>
+      <stop offset="35%" stop-color="#2A1CBD"/>
+      <stop offset="70%" stop-color="#8623DD"/>
+      <stop offset="100%" stop-color="#C100D1"/>
+    </linearGradient>
+    <pattern id="grid-hist" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="560" height="640" rx="28" fill="url(#g-hist)"/>
+  <rect width="560" height="640" rx="28" fill="url(#grid-hist)"/>
+  <polyline points="80,480 190,420 260,460 340,320 420,340 480,180" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="rgba(255,255,255,0.92)">
+    <circle cx="80" cy="480" r="6"/>
+    <circle cx="190" cy="420" r="6"/>
+    <circle cx="260" cy="460" r="6"/>
+    <circle cx="340" cy="320" r="6"/>
+    <circle cx="420" cy="340" r="6"/>
+    <circle cx="480" cy="180" r="8"/>
+  </g>
+  <text x="280" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="rgba(255,255,255,0.75)" letter-spacing="0.5">Imagen pendiente</text>
+  <text x="280" y="604" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">Nuestra historia</text>
+</svg>

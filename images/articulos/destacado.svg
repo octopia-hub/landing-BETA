@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Imagen pendiente: Gestion de Servicios de Tecnologia">
+  <defs>
+    <linearGradient id="g-articulo-destacado" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#223989"/>
+      <stop offset="32%" stop-color="#2A1CBD"/>
+      <stop offset="68%" stop-color="#8623DD"/>
+      <stop offset="100%" stop-color="#C100D1"/>
+    </linearGradient>
+    <pattern id="grid-articulo-destacado" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="640" height="420" fill="url(#g-articulo-destacado)"/>
+  <rect width="640" height="420" fill="url(#grid-articulo-destacado)"/>
+  <g transform="translate(320,178)" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="-34" y="-24" width="68" height="48" rx="6"/>
+    <circle cx="0" cy="0" r="14"/>
+    <circle cx="18" cy="-14" r="1.6" fill="rgba(255,255,255,0.85)" stroke="none"/>
+  </g>
+  <text x="320" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="rgba(255,255,255,0.75)" letter-spacing="0.5">Imagen pendiente</text>
+  <text x="320" y="276" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">Gestión de Servicios de Tecnología</text>
+</svg>

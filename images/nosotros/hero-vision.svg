@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 620" role="img" aria-label="Imagen pendiente: composición visual de Great Boost Inc.">
+  <defs>
+    <linearGradient id="g-hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#223989"/>
+      <stop offset="32%" stop-color="#2A1CBD"/>
+      <stop offset="68%" stop-color="#8623DD"/>
+      <stop offset="100%" stop-color="#C100D1"/>
+    </linearGradient>
+    <radialGradient id="g-hero-spot" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="560" height="620" rx="28" fill="url(#g-hero)"/>
+  <rect width="560" height="620" rx="28" fill="url(#g-hero-spot)"/>
+  <g fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4">
+    <circle cx="280" cy="300" r="150"/>
+    <circle cx="280" cy="300" r="104"/>
+    <circle cx="280" cy="300" r="58"/>
+  </g>
+  <g fill="rgba(255,255,255,0.92)">
+    <circle cx="280" cy="150" r="7"/>
+    <circle cx="430" cy="300" r="9"/>
+    <circle cx="280" cy="450" r="6"/>
+    <circle cx="150" cy="240" r="5"/>
+    <circle cx="176" cy="380" r="7"/>
+    <circle cx="280" cy="300" r="12"/>
+  </g>
+  <g stroke="rgba(255,255,255,0.35)" stroke-width="1.2">
+    <line x1="280" y1="300" x2="280" y2="150"/>
+    <line x1="280" y1="300" x2="430" y2="300"/>
+    <line x1="280" y1="300" x2="280" y2="450"/>
+    <line x1="280" y1="300" x2="150" y2="240"/>
+    <line x1="280" y1="300" x2="176" y2="380"/>
+  </g>
+  <text x="280" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="rgba(255,255,255,0.75)" letter-spacing="0.5">Imagen pendiente</text>
+  <text x="280" y="584" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">Composición visual — Nosotros</text>
+</svg>
